@@ -4,33 +4,19 @@ class Solution {
      * @return {number[]}
      */
     productExceptSelf(nums) {
-        let zeroCnt = 0;
-        let maxProd = 1;
-        let res = [];
+        const list = new Array(nums.length).fill(1);
 
-        for (const num of nums) {
-            if (num === 0) {
-                zeroCnt++;
-                continue;
-            }
-            maxProd *= num;
+        for (let i = 1; i < nums.length; i++) {
+            list[i] = list[i - 1] * nums[i - 1];
         }
 
-        let zeroList = new Array(nums.length).fill(0);
-
-        if (zeroCnt > 1) {
-            return zeroList;
+        let postfix = 1;
+        for (let j = nums.length - 1; j >= 0; j--) {
+            list[j] *= postfix;
+            postfix *= nums[j];
         }
 
-        if (zeroCnt === 1) {
-            zeroList[nums.indexOf(0)] = maxProd;
-            return zeroList;
-        }
-
-        for (const num of nums) {
-            res.push(maxProd / num);
-        }
-
-        return res;
+        return list;
     }
 }
+
